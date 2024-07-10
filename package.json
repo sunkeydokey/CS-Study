@@ -1,4 +1,13 @@
 {
   "name": "cs-study",
-  "packageManager": "yarn@4.3.1"
+  "packageManager": "yarn@4.3.1",
+  "workspaces": [
+    "study/*"
+  ],
+  "scripts": {
+    "data-transfer": "yarn workspace @study/data-transfer"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
 }

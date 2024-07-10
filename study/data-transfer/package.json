@@ -1,0 +1,11 @@
+{
+  "name": "@study/data-transfer",
+  "packageManager": "yarn@4.3.1",
+  "scripts": {
+    "json": "node json-transfer/index.js",
+    "xml": "node xml-transfer/index.js"
+  },
+  "dependencies": {
+    "xml2json": "^0.12.0"
+  }
+}
