@@ -1,0 +1,10 @@
+{
+  "name": "@study/api",
+  "packageManager": "yarn@4.3.1",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

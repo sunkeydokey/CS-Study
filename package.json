@@ -5,7 +5,8 @@
     "study/*"
   ],
   "scripts": {
-    "data-transfer": "yarn workspace @study/data-transfer"
+    "data-transfer": "yarn workspace @study/data-transfer",
+    "ts-utils": "yarn workspace @study/ts-utils"
   },
   "devDependencies": {
     "typescript": "^5.5.3"
