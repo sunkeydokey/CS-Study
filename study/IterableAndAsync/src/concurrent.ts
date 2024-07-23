@@ -52,16 +52,65 @@ async function concurrent<T>(limit: number, promises: (() => Promise<T>)[]) {
   return result.flat();
 }
 
+function* take<T>(length: number, iterable: Iterable<T>) {
+  const iterator = iterable[Symbol.iterator]();
+  while (length-- > 0) {
+    const { value, done } = iterator.next();
+    if (done) break;
+    yield value;
+  }
+}
+
+function* chunk<T>(size: number, iterable: Iterable<T>) {
+  const iterator = iterable[Symbol.iterator]();
+  while (true) {
+    const arr = [
+      ...take(size, {
+        [Symbol.iterator]() {
+          return iterator;
+        },
+      }),
+    ];
+    if (arr.length) yield arr;
+    if (arr.length < size) break;
+  }
+}
+
+async function concurrent2<T>(limit: number, promises: (() => Promise<T>)[]) {
+  const result: T[][] = [];
+  for (let i = 0; i < promises.length / limit; i++) {
+    const tmp: Promise<T>[] = [];
+    for (let j = 0; j < limit; j++) {
+      const func = promises[i * limit + j];
+      if (func) {
+        tmp.push(func());
+      }
+    }
+    result.push(await Promise.all(tmp));
+  }
+  return result.flat();
+}
+
 export async function all() {
   console.time();
-  const files = await concurrent(3, [
-    () => getFile("file1.png"),
-    () => getFile("file2.png"),
-    () => getFile("file3.png"),
-    () => getFile("file4.png"),
-    () => getFile("file5.png"),
-    () => getFile("file6.png"),
-  ]);
+  const iterator = chunk(3, [1, 2, 3, 4, 5, 6, 7]);
+  console.log(iterator.next());
+  console.log(iterator.next());
+  console.log(iterator.next());
+  console.log(iterator.next());
+  console.log(iterator.next());
+  console.log(iterator.next());
+  console.log(iterator.next());
+  console.log(iterator.next());
+  console.log(iterator.next());
+  // const files = await concurrent(3, [
+  //   () => getFile("file1.png"),
+  //   () => getFile("file2.png"),
+  //   () => getFile("file3.png"),
+  //   () => getFile("file4.png"),
+  //   () => getFile("file5.png"),
+  //   () => getFile("file6.png"),
+  // ]);
   console.timeEnd();
-  console.log(files);
+  // console.log(files);
 }
